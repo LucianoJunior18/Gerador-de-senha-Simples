@@ -4,8 +4,10 @@ import Input from "./components/input"
 function App() {
   const [password, setPassword] = useState("")
   const [copyText, setCopyText] = useState("Copiar")
-  const [passwordSize, setPasswordaSize] = useState(12)
+  const [customSize, setCustomSize] = useState(12)
+  const [showInput, setShowInput] = useState(false)
 
+  const passwordSize = showInput ? customSize : 8
   function generate() {
     const characters = "'1234567890-=!@#$%¨&*()_+qwertyuiop[asdfghjklç~]zxcvbnm,.;/QWERTYUIOP{ASDFGHJKLÇ^}ZXCVBNM<>:?"
     let newPassword = ""
@@ -26,10 +28,24 @@ function App() {
     <div>
       <h1>Gerador de senhas</h1>
       <div>
-        <label htmlFor="passwordSize">Tamanho:</label>
-        <Input passwordSize={passwordSize} setPasswordaSize={setPasswordaSize} />
+        <label htmlFor="showInput">Customizar o Tamanho:</label>
+        <input
+          type="checkbox"
+          id="showInput"
+          value={showInput}
+          onChange={() => setShowInput(currentState => !currentState)}
+        />
+
       </div>
-      <button onClick={generate}>Gerar senha! </button>
+      {/* se for verdadeiro ira exibir o input se for falso ira exibir null */}
+      {showInput ? (
+        <div>
+          <label htmlFor="passwordSize">Tamanho:</label>
+          <Input passwordSize={customSize} setPasswordaSize={setCustomSize} />
+        </div>
+      ) : null}
+
+      <button onClick={generate}>Gerar senha de {passwordSize} caracteres! </button>
       <button onClick={copyToClipboard}>{copyText}</button>
       <div>{password}</div>
     </div>
